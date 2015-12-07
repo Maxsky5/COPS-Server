@@ -1,6 +1,7 @@
 package com.cesi.cops.entities;
 
 import com.cesi.cops.jsonViews.View;
+import com.cesi.cops.utils.CustomDateSerializer;
 import com.cesi.cops.utils.CustomDateTimeSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -10,6 +11,7 @@ import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name = "lessons", uniqueConstraints = {@UniqueConstraint(columnNames = {"grade_id", "is_morning", "date_lesson"})})
@@ -37,8 +39,9 @@ public class Lesson implements Serializable {
     private Grade grade;
 
     @Column(name = "date_lesson", nullable = false, columnDefinition = "DATE")
+    @JsonSerialize(using = CustomDateSerializer.class)
     @JsonView(View.Principal.class)
-    private DateTime dateLesson;
+    private Date dateLesson;
 
     @Column(name = "is_morning", nullable = false)
     @JsonView(View.Principal.class)
@@ -82,11 +85,11 @@ public class Lesson implements Serializable {
         this.grade = grade;
     }
 
-    public DateTime getDateLesson() {
+    public Date getDateLesson() {
         return dateLesson;
     }
 
-    public void setDateLesson(DateTime dateLesson) {
+    public void setDateLesson(Date dateLesson) {
         this.dateLesson = dateLesson;
     }
 

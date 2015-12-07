@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface LessonRepository extends JpaRepository<Lesson, Long> {
 
-    List<Student> findByDateUpdateAfter(DateTime date);
+    List<Lesson> findByDateUpdateAfter(DateTime date);
 
 }

@@ -10,6 +10,5 @@ import java.util.List;
 
 public interface GradeRepository extends JpaRepository<Grade, Long> {
 
-    List<Student> findByDateUpdateAfter(DateTime date);
-
+    List<Grade> findByDateUpdateAfter(DateTime date);
 }
