@@ -1,8 +1,8 @@
 package com.cesi.cops.controllers;
 
-import com.cesi.cops.entities.Student;
+import com.cesi.cops.entities.Offender;
 import com.cesi.cops.jsonViews.View;
-import com.cesi.cops.repositories.StudentRepository;
+import com.cesi.cops.repositories.OffenderRepository;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,25 +20,25 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class StudentController {
+public class OffenderController {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(StudentController.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(OffenderController.class);
 
     @Autowired
-    private StudentRepository studentRepository;
+    private OffenderRepository offenderRepository;
 
-    @RequestMapping(value = "/students", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/offenders", method = RequestMethod.GET)
     @JsonView(View.PrincipalWithManyToOne.class)
-    public ResponseEntity<List<Student>> getAllStudents() {
-        return new ResponseEntity<>(studentRepository.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<Offender>> getAll() {
+        return ResponseEntity.ok().body(offenderRepository.findAll());
     }
 
-    @RequestMapping(value = "/students/updated", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/offenders/updated", method = RequestMethod.GET)
     @JsonView(View.PrincipalWithManyToOne.class)
-    public ResponseEntity<List<Student>> getStudentsUpdated(
+    public ResponseEntity<List<Offender>> getUpdated(
             @RequestParam(value = "date", required = true) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") DateTime date
     ) {
-        return new ResponseEntity<>(studentRepository.findByDateUpdateAfter(date), HttpStatus.OK);
+        return ResponseEntity.ok().body(offenderRepository.findByDateUpdateAfter(date));
     }
 
 

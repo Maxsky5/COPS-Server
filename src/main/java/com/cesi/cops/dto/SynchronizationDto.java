@@ -1,6 +1,9 @@
 package com.cesi.cops.dto;
 
-import com.cesi.cops.entities.*;
+import com.cesi.cops.entities.Cop;
+import com.cesi.cops.entities.Grade;
+import com.cesi.cops.entities.Lesson;
+import com.cesi.cops.entities.Offender;
 import com.cesi.cops.jsonViews.View;
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -10,10 +13,7 @@ import java.util.List;
 public class SynchronizationDto {
 
     @JsonView(View.PrincipalWithManyToOne.class)
-    private List<Student> students = new ArrayList<>();
-
-    @JsonView(View.PrincipalWithManyToOne.class)
-    private List<Teacher> teachers = new ArrayList<>();
+    private List<Offender> offenders = new ArrayList<>();
 
     @JsonView(View.PrincipalWithManyToOne.class)
     private List<Grade> grades = new ArrayList<>();
@@ -27,28 +27,19 @@ public class SynchronizationDto {
     public SynchronizationDto() {
     }
 
-    public SynchronizationDto(List<Student> students, List<Teacher> teachers, List<Grade> grades, List<Cop> cops, List<Lesson> lessons) {
-        this.students = students;
-        this.teachers = teachers;
+    public SynchronizationDto(List<Offender> offenders, List<Grade> grades, List<Cop> cops, List<Lesson> lessons) {
+        this.offenders = offenders;
         this.grades = grades;
         this.cops = cops;
         this.lessons = lessons;
     }
 
-    public List<Student> getStudents() {
-        return students;
+    public List<Offender> getOffenders() {
+        return offenders;
     }
 
-    public void setStudents(List<Student> students) {
-        this.students = students;
-    }
-
-    public List<Teacher> getTeachers() {
-        return teachers;
-    }
-
-    public void setTeachers(List<Teacher> teachers) {
-        this.teachers = teachers;
+    public void setOffenders(List<Offender> offenders) {
+        this.offenders = offenders;
     }
 
     public List<Grade> getGrades() {

@@ -40,7 +40,7 @@ public class Grade implements Serializable {
 
     @OneToMany(mappedBy = "grade")
     @JsonView(View.PrincipalWithOneToMany.class)
-    private List<Student> students = new ArrayList<>();
+    private List<Offender> offenders = new ArrayList<>();
 
     @Column(name = "date_update")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -80,12 +80,12 @@ public class Grade implements Serializable {
         this.dateEnd = dateEnd;
     }
 
-    public List<Student> getStudents() {
-        return students;
+    public List<Offender> getOffenders() {
+        return offenders;
     }
 
-    public void setStudents(List<Student> students) {
-        this.students = students;
+    public void setOffenders(List<Offender> offenders) {
+        this.offenders = offenders;
     }
 
     public DateTime getDateUpdate() {

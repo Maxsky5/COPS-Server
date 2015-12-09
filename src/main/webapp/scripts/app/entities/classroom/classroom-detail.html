@@ -1,0 +1,49 @@
+<section class="content-header">
+    <h1>Salle de cours : {{classroom.name}}</h1>
+    <ol class="breadcrumb">
+        <li><a href=""><i class="fa fa-dashboard"></i> Accueil</a></li>
+        <li><a ui-sref="classroom">Salles de cours</a></li>
+        <li class="active">{{classroom.name}}</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="box box-primary">
+        <div class="box-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Propriété</th>
+                        <th>Valeur</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <span>Nom</span>
+                        </td>
+                        <td>
+                            <input type="text" class="input-sm form-control" value="{{classroom.name}}" readonly>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>Nombre de places</span>
+                        </td>
+                        <td>
+                            <input type="text" class="input-sm form-control" value="{{classroom.nbPlace}}" readonly>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <button type="submit"
+            ui-sref="classroom"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Retour</span>
+    </button>
+</section>

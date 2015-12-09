@@ -3,14 +3,13 @@ package com.cesi.cops.controllers;
 import com.cesi.cops.entities.Grade;
 import com.cesi.cops.jsonViews.View;
 import com.cesi.cops.repositories.GradeRepository;
+import com.cesi.cops.utils.HeaderUtil;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -42,12 +41,19 @@ public class GradeController {
         grade.setDateStart(dateStart);
         grade.setDateEnd(dateEnd);
 
-        return new ResponseEntity<>(gradeRepository.save(grade), HttpStatus.OK);
+        Grade result = gradeRepository.save(grade);
+
+        return ResponseEntity
+                .ok()
+                .headers(HeaderUtil.createEntityCreationAlert(result.getClass().toString(), result.getId().toString()))
+                .body(result);
     }
 
     @RequestMapping(value = "/grades", method = RequestMethod.GET)
     @JsonView(View.PrincipalWithOneToMany.class)
     public ResponseEntity<List<Grade>> getAllGrades() {
-        return new ResponseEntity<>(gradeRepository.findAll(), HttpStatus.OK);
+        return ResponseEntity
+                .ok()
+                .body(gradeRepository.findAll());
     }
 }

@@ -10,8 +10,6 @@ import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity(name = "checks")
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -23,9 +21,9 @@ public class Check implements Serializable {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "student_id", nullable = false)
+    @JoinColumn(name = "offender_id", nullable = false)
     @JsonView(View.PrincipalWithManyToOne.class)
-    private Student student;
+    private Offender offender;
 
     @ManyToOne
     @JoinColumn(name = "cop_id", nullable = false)
@@ -46,12 +44,12 @@ public class Check implements Serializable {
         this.id = id;
     }
 
-    public Student getStudent() {
-        return student;
+    public Offender getOffender() {
+        return offender;
     }
 
-    public void setStudent(Student student) {
-        this.student = student;
+    public void setOffender(Offender offender) {
+        this.offender = offender;
     }
 
     public Cop getCop() {

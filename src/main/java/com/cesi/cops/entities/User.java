@@ -33,7 +33,7 @@ public class User implements Serializable {
     @ManyToOne
     @JoinColumn(name = "profile_id", nullable = false)
     @JsonView(View.PrincipalWithManyToOne.class)
-    private Profile profile;
+    private Authority authority;
 
     @Column
     @JsonView(View.Principal.class)
@@ -79,12 +79,12 @@ public class User implements Serializable {
         this.firstname = firstname;
     }
 
-    public Profile getProfile() {
-        return profile;
+    public Authority getAuthority() {
+        return authority;
     }
 
-    public void setProfile(Profile profile) {
-        this.profile = profile;
+    public void setAuthority(Authority authority) {
+        this.authority = authority;
     }
 
     public Boolean getIsActive() {

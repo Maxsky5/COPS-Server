@@ -24,19 +24,23 @@ public class Cop implements Serializable {
     @JsonView(View.Principal.class)
     private String name;
 
+    @Column
+    @JsonView(View.Principal.class)
+    private String macAddress;
+
     @ManyToOne
     @JoinColumn(name = "classroom_id")
     @JsonView(View.PrincipalWithManyToOne.class)
     private Classroom classroom;
 
     @Column(name = "date_update")
-    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonSerialize(using = CustomDateTimeSerializer.class)
     @JsonView(View.Principal.class)
     private DateTime dateUpdate;
 
     @Column(name = "date_last_sync", nullable = true)
-    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonSerialize(using = CustomDateTimeSerializer.class)
     @JsonView(View.Principal.class)
     private DateTime dateLastSync;
@@ -55,6 +59,14 @@ public class Cop implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getMacAddress() {
+        return macAddress;
+    }
+
+    public void setMacAddress(String macAddress) {
+        this.macAddress = macAddress;
     }
 
     public Classroom getClassroom() {

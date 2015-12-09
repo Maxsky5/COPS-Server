@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -40,7 +39,7 @@ public class CopsUserDetailsService implements UserDetailsService {
             if (!user.getIsActive()) {
                 throw new UserNotActiveException("User " + email + " is not active");
             }
-            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(user.getProfile().getName());
+            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(user.getAuthority().getName());
             return new org.springframework.security.core.userdetails.User(email,
                     user.getPassword(),
                     Arrays.asList(grantedAuthority));

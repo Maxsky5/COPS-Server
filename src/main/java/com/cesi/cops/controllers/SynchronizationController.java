@@ -8,10 +8,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,10 +26,7 @@ public class SynchronizationController {
     private final Logger LOGGER = LoggerFactory.getLogger(SynchronizationController.class);
 
     @Inject
-    private StudentRepository studentRepository;
-
-    @Inject
-    private TeacherRepository teacherRepository;
+    private OffenderRepository offenderRepository;
 
     @Inject
     private GradeRepository gradeRepository;
@@ -47,13 +42,12 @@ public class SynchronizationController {
     public ResponseEntity<SynchronizationDto> synchronize(
             @RequestParam(value = "date", required = true) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") DateTime date
     ) {
-        List<Student> students = studentRepository.findByDateUpdateAfter(date);
-        List<Teacher> teachers = teacherRepository.findByDateUpdateAfter(date);
+        List<Offender> offenders = offenderRepository.findByDateUpdateAfter(date);
         List<Grade> grades = gradeRepository.findByDateUpdateAfter(date);
         List<Cop> cops = copRepository.findByDateUpdateAfter(date);
         List<Lesson> lessons = lessonRepository.findByDateUpdateAfter(date);
 
-        SynchronizationDto result = new SynchronizationDto(students, teachers, grades, cops, lessons);
+        SynchronizationDto result = new SynchronizationDto(offenders, grades, cops, lessons);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

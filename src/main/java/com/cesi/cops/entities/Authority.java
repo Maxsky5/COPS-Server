@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 @Entity(name = "profiles")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Profile implements Serializable {
+public class Authority implements Serializable {
 
     @Id
     @GeneratedValue
@@ -48,12 +48,12 @@ public class Profile implements Serializable {
             return false;
         }
 
-        Profile profile = (Profile) o;
+        Authority authority = (Authority) o;
 
-        if (!id.equals(profile.id)) {
+        if (!id.equals(authority.id)) {
             return false;
         }
-        return name.equals(profile.name);
+        return name.equals(authority.name);
 
     }
 
@@ -66,7 +66,7 @@ public class Profile implements Serializable {
 
     @Override
     public String toString() {
-        return "Profile{" +
+        return "Authority{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';

@@ -26,7 +26,7 @@ public class Lesson implements Serializable {
     @ManyToOne
     @JoinColumn(name = "teacher_id", nullable = true)
     @JsonView(View.PrincipalWithManyToOne.class)
-    private Teacher teacher;
+    private Offender teacher;
 
     @ManyToOne
     @JoinColumn(name = "classroom_id", nullable = false)
@@ -61,11 +61,11 @@ public class Lesson implements Serializable {
         this.id = id;
     }
 
-    public Teacher getTeacher() {
+    public Offender getTeacher() {
         return teacher;
     }
 
-    public void setTeacher(Teacher teacher) {
+    public void setTeacher(Offender teacher) {
         this.teacher = teacher;
     }
 
