@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copsApp', ['LocalStorageModule', 'ui.bootstrap',
-    'ngResource', 'ui.router', 'ngRoute', 'ngCookies', 'ngCacheBuster', 'ui.select', 'ngSanitize'])
+    'ngResource', 'ui.router', 'ngCookies', 'ngCacheBuster', 'ui.select', 'ngSanitize'])
 
     .run(function ($rootScope, $location, $window) {
 
