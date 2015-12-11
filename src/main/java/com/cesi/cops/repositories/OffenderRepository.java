@@ -1,6 +1,8 @@
 package com.cesi.cops.repositories;
 
+import com.cesi.cops.entities.Grade;
 import com.cesi.cops.entities.Offender;
+import com.cesi.cops.utils.OffenderTypeEnum;
 import org.joda.time.DateTime;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -13,4 +15,8 @@ public interface OffenderRepository extends JpaRepository<Offender, Long> {
     Optional<Offender> findOneByEmail(String email);
 
     List<Offender> findByDateUpdateAfter(DateTime date);
+
+    List<Offender> findByType(OffenderTypeEnum type);
+
+    List<Offender> findByTypeAndGrade(OffenderTypeEnum type, Grade grade);
 }

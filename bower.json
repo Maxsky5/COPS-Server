@@ -17,7 +17,8 @@
     "angular-local-storage": "0.2.0",
     "angular-cache-buster": "0.4.3",
     "angular-ui-select": "~0.12.1",
-    "admin-lte": "2.3.1"
+    "admin-lte": "2.3.1",
+    "bootstrap-datepicker": "1.5"
   },
   "resolutions": {
     "angular": "1.4.8",

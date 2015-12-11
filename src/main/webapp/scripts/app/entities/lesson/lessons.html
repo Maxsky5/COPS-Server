@@ -1,25 +1,25 @@
 <section class="content-header">
-    <h1>Cops</h1>
+    <h1>Cours</h1>
     <ol class="breadcrumb">
         <li><a href=""><i class="fa fa-dashboard"></i> Accueil</a></li>
-        <li class="active">Cops</li>
+        <li class="active">Cours</li>
     </ol>
 </section>
 
 <section class="content">
     <div class="box box-primary">
         <div class="box-body no-padding-x no-padding-y">
-            <div class="modal fade" id="deleteCopConfirmation">
+            <div class="modal fade" id="deleteLessonConfirmation">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form name="deleteForm" ng-submit="confirmDelete(cop.id)">
+                        <form name="deleteForm" ng-submit="confirmDelete(lesson.id)">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                                         ng-click="clear()">&times;</button>
                                 <h4 class="modal-title">Confirmation de la suppression</h4>
                             </div>
                             <div class="modal-body">
-                                <p>Etes vous sur de vouloir supprimer ce cop ?</p>
+                                <p>Etes vous sur de vouloir supprimer ce cours ?</p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
@@ -39,32 +39,34 @@
                     <tr>
                         <th>ID</th>
                         <th>Nom</th>
-                        <th>Adresse MAC</th>
-                        <th>Date de dernière synchro</th>
-                        <th>Salle</th>
+                        <th>Salle de cours</th>
+                        <th>Date du cours</th>
+                        <th>Intervenant</th>
+                        <th>Promotions</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="cop in cops">
-                        <td><a ui-sref="cop.detail({id:cop.id})">{{cop.id}}</a></td>
-                        <td>{{cop.name}}</td>
-                        <td>{{cop.macAddress}}</td>
-                        <td>{{cop.dateLastSync}}</td>
-                        <td>{{cop.classroom.name}}</td>
+                    <tr ng-repeat="lesson in lessons">
+                        <td><a ui-sref="lesson.detail({id:lesson.id})">{{lesson.id}}</a></td>
+                        <td>{{lesson.name}}</td>
+                        <td>{{lesson.classroom.name}}</td>
+                        <td>{{lesson.dateLesson}}</td>
+                        <td>{{lesson.teacher.firstname + lesson.teacher.lastname}}</td>
+                        <td><span ng-repeat="grade in lesson.grades">{{grade.name}} / </span></td>
                         <td class="text-right">
                             <button type="submit"
-                                    ui-sref="cop.detail({id:cop.id})"
+                                    ui-sref="lesson.detail({id:lesson.id})"
                                     class="btn btn-info btn-sm">
                                 <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span> Visionner</span>
                             </button>
                             <button type="submit"
-                                    ui-sref="cop.edit({id:cop.id})"
+                                    ui-sref="lesson.edit({id:lesson.id})"
                                     class="btn btn-primary btn-sm">
                                 <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span> Modifier</span>
                             </button>
                             <button type="submit"
-                                    ng-click="delete(cop.id)"
+                                    ng-click="delete(lesson.id)"
                                     class="btn btn-danger btn-sm">
                                 <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span> Supprimer</span>
                             </button>
@@ -74,8 +76,8 @@
             </table>
         </div>
         <div class="box-footer">
-            <button class="btn btn-primary" ui-sref="cop.new">
-                <span class="glyphicon glyphicon-flash"></span> <span>Ajouter un Cop</span>
+            <button class="btn btn-primary" ui-sref="lesson.new">
+                <span class="glyphicon glyphicon-flash"></span> <span>Ajouter un cours</span>
             </button>
         </div>
     </div>

@@ -2,9 +2,11 @@ package com.cesi.cops.entities;
 
 import com.cesi.cops.jsonViews.View;
 import com.cesi.cops.utils.CustomDateSerializer;
+import com.cesi.cops.utils.CustomDateTimeDeserializer;
 import com.cesi.cops.utils.CustomDateTimeSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
@@ -45,6 +47,7 @@ public class Grade implements Serializable {
     @Column(name = "date_update")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonSerialize(using = CustomDateTimeSerializer.class)
+    @JsonDeserialize(using = CustomDateTimeDeserializer.class)
     @JsonView(View.Principal.class)
     private DateTime dateUpdate;
 

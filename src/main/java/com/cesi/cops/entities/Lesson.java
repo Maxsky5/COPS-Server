@@ -2,9 +2,11 @@ package com.cesi.cops.entities;
 
 import com.cesi.cops.jsonViews.View;
 import com.cesi.cops.utils.CustomDateSerializer;
+import com.cesi.cops.utils.CustomDateTimeDeserializer;
 import com.cesi.cops.utils.CustomDateTimeSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
@@ -12,9 +14,10 @@ import org.joda.time.DateTime;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "lessons", uniqueConstraints = {@UniqueConstraint(columnNames = {"grade_id", "is_morning", "date_lesson"})})
+@Table(name = "lessons")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Lesson implements Serializable {
 
@@ -22,6 +25,10 @@ public class Lesson implements Serializable {
     @GeneratedValue
     @JsonView(View.Principal.class)
     private Long id;
+
+    @Column
+    @JsonView(View.Principal.class)
+    private String name;
 
     @ManyToOne
     @JoinColumn(name = "teacher_id", nullable = true)
@@ -33,10 +40,25 @@ public class Lesson implements Serializable {
     @JsonView(View.PrincipalWithManyToOne.class)
     private Classroom classroom;
 
-    @ManyToOne
+    @ManyToMany
+    @JoinTable(
+        name = "lessons_grades",
+        joinColumns = {
+            @JoinColumn(name = "lesson_id", nullable = false, updatable = false)
+        },
+        inverseJoinColumns = {
+            @JoinColumn(name = "grade_id", nullable = false, updatable = false)
+        },
+        uniqueConstraints = {
+            @UniqueConstraint(columnNames = {
+                "lesson_id",
+                "grade_id"
+            })
+        }
+    )
     @JoinColumn(name = "grade_id", nullable = false)
     @JsonView(View.PrincipalWithManyToOne.class)
-    private Grade grade;
+    private List<Grade> grades;
 
     @Column(name = "date_lesson", nullable = false, columnDefinition = "DATE")
     @JsonSerialize(using = CustomDateSerializer.class)
@@ -47,9 +69,10 @@ public class Lesson implements Serializable {
     @JsonView(View.Principal.class)
     private Boolean isMorning;
 
-    @Column(name = "date_update", columnDefinition = "TIMESTAMP")
-    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    @Column(name = "date_update")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonSerialize(using = CustomDateTimeSerializer.class)
+    @JsonDeserialize(using = CustomDateTimeDeserializer.class)
     @JsonView(View.Principal.class)
     private DateTime dateUpdate;
 
@@ -59,6 +82,14 @@ public class Lesson implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Offender getTeacher() {
@@ -77,12 +108,12 @@ public class Lesson implements Serializable {
         this.classroom = classroom;
     }
 
-    public Grade getGrade() {
-        return grade;
+    public List<Grade> getGrades() {
+        return grades;
     }
 
-    public void setGrade(Grade grade) {
-        this.grade = grade;
+    public void setGrades(List<Grade> grades) {
+        this.grades = grades;
     }
 
     public Date getDateLesson() {

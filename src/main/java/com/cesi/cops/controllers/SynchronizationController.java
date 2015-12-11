@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -37,6 +38,22 @@ public class SynchronizationController {
     @Inject
     private LessonRepository lessonRepository;
 
+    @Inject
+    private ClassroomRepository classroomRepository;
+
+    @RequestMapping(value = "/init", method = RequestMethod.GET)
+    @JsonView(View.PrincipalWithManyToOne.class)
+    public ResponseEntity<SynchronizationDto> init() {
+        List<Offender> offenders = offenderRepository.findAll();
+        List<Grade> grades = gradeRepository.findAll();
+        List<Cop> cops = copRepository.findAll();
+        List<Lesson> lessons = lessonRepository.findAll();
+        List<Classroom> classrooms = classroomRepository.findAll();
+
+        SynchronizationDto result = new SynchronizationDto(offenders, grades, cops, lessons, classrooms);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/synchronize", method = RequestMethod.GET)
     @JsonView(View.PrincipalWithManyToOne.class)
     public ResponseEntity<SynchronizationDto> synchronize(
@@ -46,8 +63,9 @@ public class SynchronizationController {
         List<Grade> grades = gradeRepository.findByDateUpdateAfter(date);
         List<Cop> cops = copRepository.findByDateUpdateAfter(date);
         List<Lesson> lessons = lessonRepository.findByDateUpdateAfter(date);
+        List<Classroom> classrooms = classroomRepository.findByDateUpdateAfter(date);
 
-        SynchronizationDto result = new SynchronizationDto(offenders, grades, cops, lessons);
+        SynchronizationDto result = new SynchronizationDto(offenders, grades, cops, lessons, classrooms);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

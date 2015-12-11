@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/cops")
 public class CopController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(CopController.class);
@@ -28,8 +28,8 @@ public class CopController {
     @Autowired
     private CopRepository copRepository;
 
-    @RequestMapping(value = "/cops", method = RequestMethod.POST)
-    @JsonView(View.Principal.class)
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    @JsonView(View.PrincipalWithManyToOne.class)
     public ResponseEntity<Cop> create(@Valid @RequestBody Cop cop) throws URISyntaxException {
         if (cop.getId() != null) {
             return ResponseEntity.badRequest().header("Failure", "A new cop cannot already have an ID").body(null);
@@ -42,8 +42,8 @@ public class CopController {
             .body(result);
     }
 
-    @RequestMapping(value = "/cops", method = RequestMethod.PUT)
-    @JsonView(View.Principal.class)
+    @RequestMapping(value = "", method = RequestMethod.PUT)
+    @JsonView(View.PrincipalWithManyToOne.class)
     public ResponseEntity<Cop> update(@Valid @RequestBody Cop cop) throws URISyntaxException {
         if (cop.getId() == null) {
             return create(cop);
@@ -56,14 +56,14 @@ public class CopController {
             .body(result);
     }
 
-    @RequestMapping(value = "/cops", method = RequestMethod.GET)
-    @JsonView(View.Principal.class)
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    @JsonView(View.PrincipalWithManyToOne.class)
     public ResponseEntity<List<Cop>> getAll() {
         return ResponseEntity.ok().body(copRepository.findAll());
     }
 
-    @RequestMapping(value = "/cops/{id}", method = RequestMethod.GET)
-    @JsonView(View.Principal.class)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @JsonView(View.PrincipalWithManyToOne.class)
     public ResponseEntity<Cop> get(@PathVariable Long id) {
         return Optional.ofNullable(copRepository.findOne(id))
             .map(cop -> new ResponseEntity<>(
@@ -72,7 +72,7 @@ public class CopController {
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @RequestMapping(value = "/cops/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         copRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("cop", id.toString())).build();
