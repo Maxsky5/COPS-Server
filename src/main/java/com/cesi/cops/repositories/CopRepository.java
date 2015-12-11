@@ -9,4 +9,6 @@ import java.util.List;
 public interface CopRepository extends JpaRepository<Cop, Long> {
 
     List<Cop> findByDateUpdateAfter(DateTime date);
+
+    Cop findOneByMacAddress(String macAddress);
 }

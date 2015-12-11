@@ -11,7 +11,7 @@ public class CheckDto {
 
     Long studentId;
 
-    Long copId;
+    String copMacAddress;
 
     @JsonSerialize(using = CustomDateTimeSerializer.class)
     @JsonDeserialize(using = CustomDateTimeDeserializer.class)
@@ -20,9 +20,9 @@ public class CheckDto {
     public CheckDto() {
     }
 
-    public CheckDto(Long studentId, Long copId, DateTime date) {
+    public CheckDto(Long studentId, String copMacAddress, DateTime date) {
         this.studentId = studentId;
-        this.copId = copId;
+        this.copMacAddress = copMacAddress;
         this.date = date;
     }
 
@@ -34,12 +34,12 @@ public class CheckDto {
         this.studentId = studentId;
     }
 
-    public Long getCopId() {
-        return copId;
+    public String getCopMacAddress() {
+        return copMacAddress;
     }
 
-    public void setCopId(Long copId) {
-        this.copId = copId;
+    public void setCopMacAddress(String copMacAddress) {
+        this.copMacAddress = copMacAddress;
     }
 
     public DateTime getDate() {

@@ -35,10 +35,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
                 .antMatchers("/")
+                .antMatchers("/WEB-INF/index.html")
                 .antMatchers("/**")
                 .antMatchers("/api/**")
-                .antMatchers("/scripts/**/*.{js,html}")
-                .antMatchers("/assets/**");
+                .antMatchers("/WEB-INF/scripts/**/*.{js,html}")
+                .antMatchers("/WEB-INF/assets/**");
     }
 
 }
