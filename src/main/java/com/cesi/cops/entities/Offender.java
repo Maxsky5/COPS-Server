@@ -16,7 +16,7 @@ import java.io.Serializable;
 
 @Entity(name = "offenders")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Offender implements Serializable {
+public class Offender implements Serializable, CopEntity {
 
     @Id
     @GeneratedValue

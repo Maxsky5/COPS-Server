@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface OffenderRepository extends JpaRepository<Offender, Long> {
 
-    Optional<Offender> findOneByEmail(String email);
+    Offender findOneByIdAndType(Long id, OffenderTypeEnum type);
 
     List<Offender> findByDateUpdateAfter(DateTime date);
 

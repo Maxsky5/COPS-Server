@@ -1,0 +1,60 @@
+<form name="editForm" role="form" novalidate ng-submit="save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="clear()">&times;</button>
+        <h4 class="modal-title" id="myTagLabel">Création ou modification d'un étudiant</h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id" ng-model="student.id" readonly>
+        </div>
+
+        <div class="form-group">
+            <label for="field_firstname">Prénom</label>
+            <input type="text" class="form-control" name="firstname" id="field_firstname" ng-model="student.firstname" required>
+
+            <div ng-show="editForm.firstname.$invalid">
+                <p class="help-block" ng-show="editForm.firstname.$error.required">Ce champs est requis.</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="field_lastname">Nom</label>
+            <input type="text" class="form-control" name="lastname" id="field_lastname" ng-model="student.lastname" required>
+
+            <div ng-show="editForm.lastname.$invalid">
+                <p class="help-block" ng-show="editForm.lastname.$error.required">Ce champs est requis.</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="field_email">Email</label>
+            <input type="text" class="form-control" name="email" id="field_email" ng-model="student.email" required>
+
+            <div ng-show="editForm.email.$invalid">
+                <p class="help-block" ng-show="editForm.email.$error.required">Ce champs est requis.</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="field_grade">Promotion</label>
+            <select id="field_grade" class="form-control" ng-model="student.grade" name="grade" required
+                    ng-options="option.name for option in grades track by option.id">
+            </select>
+
+            <div ng-show="editForm.grade.$invalid">
+                <p class="help-block" ng-show="editForm.grade.$error.required">Ce champs est requis.</p>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Annuler</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || editForm.$submitted" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Enregistrer</span>
+        </button>
+    </div>
+</form>

@@ -17,7 +17,7 @@ import java.util.List;
 
 @Entity(name = "classrooms")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Classroom implements Serializable {
+public class Classroom implements Serializable, CopEntity {
 
     @Id
     @GeneratedValue
