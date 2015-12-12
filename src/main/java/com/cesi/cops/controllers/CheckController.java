@@ -7,8 +7,6 @@ import com.cesi.cops.entities.Offender;
 import com.cesi.cops.repositories.CheckRepository;
 import com.cesi.cops.repositories.CopRepository;
 import com.cesi.cops.repositories.OffenderRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,8 +20,6 @@ import java.util.ArrayList;
 @RestController
 @RequestMapping("/api")
 public class CheckController {
-
-    private final Logger LOGGER = LoggerFactory.getLogger(CheckController.class);
 
     @Autowired
     private OffenderRepository offenderRepository;

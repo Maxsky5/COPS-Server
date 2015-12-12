@@ -20,7 +20,7 @@ angular.module('copsApp', ['LocalStorageModule', 'ui.bootstrap',
     })
     .config(function (httpRequestInterceptorCacheBusterProvider, $stateProvider, $urlRouterProvider) {
 
-        $urlRouterProvider.otherwise("/classrooms");
+        $urlRouterProvider.otherwise("/dashboard");
 
         $stateProvider
             .state('site', {
