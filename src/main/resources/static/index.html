@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>COPS</title>
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css">
+    <link rel="stylesheet" href="bower_components/admin-lte/dist/css/skins/_all-skins.css">
+    <link rel="stylesheet" href="bower_components/admin-lte/dist/css/AdminLTE.css">
+    <link rel="stylesheet" href="bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css">
+    <!-- endbower -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="assets/main.css" />
+</head>
+<body ng-app="copsApp" class="{{!$state.includes('login') ? 'skin-red-light sidebar-mini' : 'hold-transition login-page'}}">
+
+    <div class="wrapper" ng-show="!$state.includes('login')">
+
+        <div ui-view="navbar"></div>
+        <div ui-view="sidebar"></div>
+
+        <div class="content-wrapper">
+            <div ui-view="content"></div>
+        </div>
+    </div>
+
+
+    <div ng-show="$state.includes('login')">
+        <div ui-view="login"></div>
+    </div>
+
+    <!-- bower:js -->
+    <script src="bower_components/modernizr/modernizr.js"></script>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/json3/lib/json3.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-ui-select/dist/select.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+    <script src="bower_components/angular-cache-buster/angular-cache-buster.js"></script>
+    <script src="bower_components/admin-lte/dist/js/app.js"></script>
+    <script src="bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
+    <!-- endbower -->
+
+    <script src="scripts/app/app.js"></script>
+
+    <script src="scripts/components/user/user.service.js"></script>
+    <script src="scripts/components/alert/alert.service.js"></script>
+    <script src="scripts/components/alert/alert.directive.js"></script>
+    <script src="scripts/components/navbar/navbar.controller.js"></script>
+
+    <script src="scripts/app/error/error.js"></script>
+
+    <script src="scripts/components/auth/auth.service.js"></script>
+    <script src="scripts/app/login/login.controller.js"></script>
+    <script src="scripts/app/login/login.js"></script>
+
+    <script src="scripts/components/dashboard/dashboard.service.js"></script>
+    <script src="scripts/app/dashboard/dashboard.controller.js"></script>
+    <script src="scripts/app/dashboard/dashboard.js"></script>
+
+    <script src="scripts/app/entities/entity.js"></script>
+
+    <script src="scripts/components/entities/classroom/classroom.service.js"></script>
+    <script src="scripts/app/entities/classroom/classroom.controller.js"></script>
+    <script src="scripts/app/entities/classroom/classroom.js"></script>
+    <script src="scripts/app/entities/classroom/classroom-dialog.controller.js"></script>
+    <script src="scripts/app/entities/classroom/classroom-detail.controller.js"></script>
+
+    <script src="scripts/components/entities/cop/cop.service.js"></script>
+    <script src="scripts/app/entities/cop/cop.controller.js"></script>
+    <script src="scripts/app/entities/cop/cop.js"></script>
+    <script src="scripts/app/entities/cop/cop-dialog.controller.js"></script>
+    <script src="scripts/app/entities/cop/cop-detail.controller.js"></script>
+
+    <script src="scripts/components/entities/grade/grade.service.js"></script>
+    <script src="scripts/app/entities/grade/grade.controller.js"></script>
+    <script src="scripts/app/entities/grade/grade.js"></script>
+    <script src="scripts/app/entities/grade/grade-dialog.controller.js"></script>
+    <script src="scripts/app/entities/grade/grade-detail.controller.js"></script>
+
+    <script src="scripts/components/entities/lesson/lesson.service.js"></script>
+    <script src="scripts/app/entities/lesson/lesson.controller.js"></script>
+    <script src="scripts/app/entities/lesson/lesson.js"></script>
+    <script src="scripts/app/entities/lesson/lesson-dialog.controller.js"></script>
+    <script src="scripts/app/entities/lesson/lesson-detail.controller.js"></script>
+
+    <script src="scripts/components/entities/student/student.service.js"></script>
+    <script src="scripts/app/entities/student/student.controller.js"></script>
+    <script src="scripts/app/entities/student/student.js"></script>
+    <script src="scripts/app/entities/student/student-dialog.controller.js"></script>
+    <script src="scripts/app/entities/student/student-detail.controller.js"></script>
+
+    <script src="scripts/components/entities/teacher/teacher.service.js"></script>
+    <script src="scripts/app/entities/teacher/teacher.controller.js"></script>
+    <script src="scripts/app/entities/teacher/teacher.js"></script>
+    <script src="scripts/app/entities/teacher/teacher-dialog.controller.js"></script>
+    <script src="scripts/app/entities/teacher/teacher-detail.controller.js"></script>
+
+    <script src="scripts/components/user/user.service.js"></script>
+    <script src="scripts/app/user/user.controller.js"></script>
+    <script src="scripts/app/user/user.js"></script>
+    <script src="scripts/app/user/user-dialog.controller.js"></script>
+
+</body>
+</html>

@@ -14,7 +14,7 @@ public class DashboardDto {
 
     private Integer nbCops;
 
-    private List<CopEntity> lastUpdates;
+    private List<DashboardEntityDto> lastUpdates;
 
     private List<DashboardCheckDto> lastChecks;
 
@@ -53,11 +53,11 @@ public class DashboardDto {
         this.nbCops = nbCops;
     }
 
-    public List<CopEntity> getLastUpdates() {
+    public List<DashboardEntityDto> getLastUpdates() {
         return lastUpdates;
     }
 
-    public void setLastUpdates(List<CopEntity> lastUpdates) {
+    public void setLastUpdates(List<DashboardEntityDto> lastUpdates) {
         this.lastUpdates = lastUpdates;
     }
 

@@ -39,10 +39,7 @@ public class CopsUserDetailsService implements UserDetailsService {
             if (!user.getIsActive()) {
                 throw new UserNotActiveException("User " + email + " is not active");
             }
-            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(user.getAuthority().getName());
-            return new org.springframework.security.core.userdetails.User(email,
-                    user.getPassword(),
-                    Arrays.asList(grantedAuthority));
+            return new CopsUserDetails(user);
         }).orElseThrow(() -> new UsernameNotFoundException("User " + email + " was not found in the database"));
     }
 }

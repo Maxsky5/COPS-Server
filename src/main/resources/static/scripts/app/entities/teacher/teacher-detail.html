@@ -1,0 +1,55 @@
+<section class="content-header">
+    <h1>Intervenant : {{teacher.name}}</h1>
+    <ol class="breadcrumb">
+        <li><a href=""><i class="fa fa-dashboard"></i> Accueil</a></li>
+        <li><a ui-sref="teacher">Intervenants</a></li>
+        <li class="active">{{teacher.name}}</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="box box-primary">
+        <div class="box-body no-padding-x no-padding-y">
+            <table class="table table-striped">
+                <tr>
+                    <td>
+                        <span>Prénom</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{teacher.firstname}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Nom</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{teacher.lastname}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Email</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{teacher.email}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Date de dernière modification</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{teacher.dateUpdate}}" readonly>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <button type="submit"
+            ui-sref="teacher"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Retour</span>
+    </button>
+</section>

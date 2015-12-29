@@ -6,9 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface CopRepository extends JpaRepository<Cop, Long> {
-
-    List<Cop> findByDateUpdateAfter(DateTime date);
+public interface CopRepository extends CopsCrudRepository<Cop, Long> {
 
     Cop findOneByMacAddress(String macAddress);
 }

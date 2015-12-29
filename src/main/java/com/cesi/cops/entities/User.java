@@ -1,33 +1,40 @@
 package com.cesi.cops.entities;
 
 import com.cesi.cops.jsonViews.View;
+import com.cesi.cops.utils.CustomDateTimeDeserializer;
+import com.cesi.cops.utils.CustomDateTimeSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity(name = "users")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class User implements Serializable {
+public class User implements CopEntity, Serializable {
 
     @Id
     @GeneratedValue
     @JsonView(View.Principal.class)
-    private Integer id;
+    private Long id;
 
     @Column(nullable = false)
     @JsonView(View.Principal.class)
     private String email;
 
     @Column(nullable = false)
-    @JsonView(View.Principal.class)
     private String password;
 
     @Column(nullable = false)
+    @JsonView(View.Principal.class)
     private String lastname;
 
     @Column(nullable = false)
+    @JsonView(View.Principal.class)
     private String firstname;
 
     @ManyToOne
@@ -39,11 +46,18 @@ public class User implements Serializable {
     @JsonView(View.Principal.class)
     private Boolean isActive = true;
 
-    public Integer getId() {
+    @Column(name = "date_update")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    @JsonSerialize(using = CustomDateTimeSerializer.class)
+    @JsonDeserialize(using = CustomDateTimeDeserializer.class)
+    @JsonView(View.Principal.class)
+    private DateTime dateUpdate;
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -53,6 +67,10 @@ public class User implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getName() {
+        return this.firstname + " " + this.lastname;
     }
 
     public String getPassword() {
@@ -93,6 +111,14 @@ public class User implements Serializable {
 
     public void setIsActive(Boolean isActive) {
         this.isActive = isActive;
+    }
+
+    public DateTime getDateUpdate() {
+        return dateUpdate;
+    }
+
+    public void setDateUpdate(DateTime dateUpdate) {
+        this.dateUpdate = dateUpdate;
     }
 
 }

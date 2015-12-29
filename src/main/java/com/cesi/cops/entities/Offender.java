@@ -75,6 +75,10 @@ public class Offender implements Serializable, CopEntity {
         this.lastname = lastname;
     }
 
+    public String getName() {
+        return this.firstname + " " + this.getLastname();
+    }
+
     public String getEmail() {
         return email;
     }
@@ -106,4 +110,5 @@ public class Offender implements Serializable, CopEntity {
     public void setType(OffenderTypeEnum type) {
         this.type = type;
     }
+
 }

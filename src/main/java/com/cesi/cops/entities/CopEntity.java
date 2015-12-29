@@ -8,6 +8,8 @@ public interface CopEntity {
 
     void setId(Long id);
 
+    String getName();
+
     DateTime getDateUpdate();
 
     void setDateUpdate(DateTime date);

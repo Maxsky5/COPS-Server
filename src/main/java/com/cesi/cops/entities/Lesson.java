@@ -56,7 +56,6 @@ public class Lesson implements Serializable, CopEntity {
             })
         }
     )
-    @JoinColumn(name = "grade_id", nullable = false)
     @JsonView(View.PrincipalWithManyToOne.class)
     private List<Grade> grades;
 

@@ -8,11 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface OffenderRepository extends JpaRepository<Offender, Long> {
+public interface OffenderRepository extends CopsCrudRepository<Offender, Long> {
 
     Offender findOneByIdAndType(Long id, OffenderTypeEnum type);
-
-    List<Offender> findByDateUpdateAfter(DateTime date);
 
     List<Offender> findByType(OffenderTypeEnum type);
 

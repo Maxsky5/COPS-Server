@@ -10,7 +10,4 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/classrooms")
 public class ClassroomController extends AbstractRestController<Classroom> {
 
-    @Autowired
-    protected ClassroomRepository repository;
-
 }

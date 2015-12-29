@@ -61,9 +61,7 @@ public abstract class AbstractRestController<T extends CopEntity> {
     @JsonView(View.PrincipalWithManyToOne.class)
     public ResponseEntity<T> get(@PathVariable Long id) {
         return Optional.ofNullable(repository.findOne(id))
-            .map(classroom -> new ResponseEntity<>(
-                classroom,
-                HttpStatus.OK))
+            .map(e -> new ResponseEntity<>(e, HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
