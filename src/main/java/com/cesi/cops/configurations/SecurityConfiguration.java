@@ -1,7 +1,9 @@
 package com.cesi.cops.configurations;
 
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -12,11 +14,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.inject.Inject;
 
-@Configuration
 @EnableWebSecurity
+@Configuration
+@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Inject
@@ -27,8 +31,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Inject
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
             .userDetailsService(userDetailsService)
             .passwordEncoder(passwordEncoder());
@@ -39,15 +43,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
             .httpBasic()
             .and()
-            .formLogin()
-            .and()
             .authorizeRequests()
-            .antMatchers("/assets/*", "/bower_components/**/*.{js,html,css}", "/scripts/**/*.{js,html}", "/index.html", "/").permitAll()
+            .antMatchers("/assets/**", "/bower_components/**/*.{js,html,css}", "/scripts/**/*.{js,html}", "/index.html", "/", "/user").permitAll()
             .anyRequest().authenticated()
             .and()
-            .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)
             .csrf().csrfTokenRepository(csrfTokenRepository())
-            .and().logout();
+            .and()
+            .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)
+            .logout()
+            .permitAll()
+            .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+            .invalidateHttpSession(true)
+            .logoutSuccessUrl("/");
     }
 
     private CsrfTokenRepository csrfTokenRepository() {

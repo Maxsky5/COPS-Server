@@ -1,6 +1,7 @@
 package com.cesi.cops.entities;
 
 import com.cesi.cops.jsonViews.View;
+import com.cesi.cops.utils.CustomDateDeserializer;
 import com.cesi.cops.utils.CustomDateSerializer;
 import com.cesi.cops.utils.CustomDateTimeDeserializer;
 import com.cesi.cops.utils.CustomDateTimeSerializer;
@@ -10,6 +11,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -31,14 +33,20 @@ public class Grade implements Serializable, CopEntity {
     private String name;
 
     @Column(name = "date_start", columnDefinition = "DATE")
+    @DateTimeFormat(pattern = "yyy-MM-dd")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonSerialize(using = CustomDateSerializer.class)
+    @JsonDeserialize(using = CustomDateDeserializer.class)
     @JsonView(View.Principal.class)
-    private Date dateStart;
+    private DateTime dateStart;
 
     @Column(name = "date_end", columnDefinition = "DATE")
+    @DateTimeFormat(pattern = "yyy-MM-dd")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonSerialize(using = CustomDateSerializer.class)
+    @JsonDeserialize(using = CustomDateDeserializer.class)
     @JsonView(View.Principal.class)
-    private Date dateEnd;
+    private DateTime dateEnd;
 
     @OneToMany(mappedBy = "grade")
     @JsonView(View.PrincipalWithOneToMany.class)
@@ -67,19 +75,19 @@ public class Grade implements Serializable, CopEntity {
         this.name = name;
     }
 
-    public Date getDateStart() {
+    public DateTime getDateStart() {
         return dateStart;
     }
 
-    public void setDateStart(Date dateStart) {
+    public void setDateStart(DateTime dateStart) {
         this.dateStart = dateStart;
     }
 
-    public Date getDateEnd() {
+    public DateTime getDateEnd() {
         return dateEnd;
     }
 
-    public void setDateEnd(Date dateEnd) {
+    public void setDateEnd(DateTime dateEnd) {
         this.dateEnd = dateEnd;
     }
 

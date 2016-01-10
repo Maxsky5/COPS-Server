@@ -6,7 +6,7 @@ angular.module('copsApp')
         $scope.credentials = {};
 
         $scope.login = function() {
-            AuthService.login($scope.credentials);
+            AuthService.authenticate($scope.credentials);
         };
 
     });

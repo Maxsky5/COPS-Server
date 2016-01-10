@@ -1,17 +1,33 @@
 'use strict';
 
-angular.module('copsApp', ['LocalStorageModule', 'ui.bootstrap',
-    'ngResource', 'ui.router', 'ngCookies', 'ngCacheBuster', 'ui.select', 'ngSanitize'])
+angular.module('copsApp', ['LocalStorageModule', 'ui.bootstrap', 'ngResource', 'ui.router', 'ngCacheBuster', 'ui.select', 'ngSanitize'])
 
-    .run(function ($rootScope, $location, $window, $state, AuthService) {
+    .run(function ($rootScope, $http, $location, $window, $state, AuthService) {
 
-        AuthService.authenticate();
+        AuthService.getUser(function () {
+            if (!$rootScope.authenticated) {
+                if ($location.path() != '/login') {
+                    $rootScope.requestedPath = $location.path();
+                }
+                $location.path('/login');
+            } else {
+                $rootScope.requestedPath = null;
+            }
+        });
+
         $rootScope.$state = $state;
+        $rootScope.loading = true;
 
         $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-            if (!$rootScope.authenticated) {
-                $location.path("/login");
+            if (!$rootScope.authenticated && !$rootScope.loading) {
+                if ($location.path() != '/login') {
+                    $rootScope.requestedPath = $location.path();
+                }
+
+                $location.path('/login');
             }
+
+            $rootScope.loading = false;
 
             var titleKey = 'Cops';
 
@@ -48,4 +64,6 @@ angular.module('copsApp', ['LocalStorageModule', 'ui.bootstrap',
 
         //Cache everything except rest api requests
         httpRequestInterceptorCacheBusterProvider.setMatchlist([/.*api.*/, /.*protected.*/], true);
+
+        $httpProvider.interceptors.push('httpInterceptor');
     });

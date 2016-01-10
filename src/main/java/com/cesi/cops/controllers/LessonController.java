@@ -6,6 +6,7 @@ import com.cesi.cops.jsonViews.View;
 import com.cesi.cops.repositories.GradeRepository;
 import com.cesi.cops.repositories.LessonRepository;
 import com.fasterxml.jackson.annotation.JsonView;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -51,7 +51,7 @@ public class LessonController extends AbstractRestController<Lesson> {
         Grade grade = gradeRepository.findOne(gradeId);
 
         if (null != grade) {
-            lessons = repository.findTop10ByGradesAndDateLessonAfter(grade, new Date());
+            lessons = repository.findTop10ByGradesAndDateLessonAfterOrderByDateLesson(grade, new DateTime());
         }
 
         return ResponseEntity.ok().body(lessons);

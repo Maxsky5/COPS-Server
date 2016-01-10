@@ -1,19 +1,17 @@
 package com.cesi.cops.entities;
 
 import com.cesi.cops.jsonViews.View;
-import com.cesi.cops.utils.CustomDateSerializer;
-import com.cesi.cops.utils.CustomDateTimeDeserializer;
-import com.cesi.cops.utils.CustomDateTimeSerializer;
+import com.cesi.cops.utils.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -60,9 +58,12 @@ public class Lesson implements Serializable, CopEntity {
     private List<Grade> grades;
 
     @Column(name = "date_lesson", nullable = false, columnDefinition = "DATE")
+    @DateTimeFormat(pattern = "yyy-MM-dd")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonSerialize(using = CustomDateSerializer.class)
+    @JsonDeserialize(using = CustomDateDeserializer.class)
     @JsonView(View.Principal.class)
-    private Date dateLesson;
+    private DateTime dateLesson;
 
     @Column(name = "is_morning", nullable = false)
     @JsonView(View.Principal.class)
@@ -115,11 +116,11 @@ public class Lesson implements Serializable, CopEntity {
         this.grades = grades;
     }
 
-    public Date getDateLesson() {
+    public DateTime getDateLesson() {
         return dateLesson;
     }
 
-    public void setDateLesson(Date dateLesson) {
+    public void setDateLesson(DateTime dateLesson) {
         this.dateLesson = dateLesson;
     }
 

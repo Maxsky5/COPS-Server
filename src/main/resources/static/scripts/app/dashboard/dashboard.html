@@ -83,6 +83,9 @@
                             <td>{{lastCheck.student}}</td>
                             <td class="text-right">{{lastCheck.date}}</td>
                         </tr>
+                        <tr ng-show="dashboard.lastChecks.length == 0">
+                            <td>Aucun résultat</td>
+                        </tr>
                     </table>
                 </div>
             </div>

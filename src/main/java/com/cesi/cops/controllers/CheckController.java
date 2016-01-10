@@ -1,12 +1,16 @@
 package com.cesi.cops.controllers;
 
 import com.cesi.cops.dto.CheckDto;
+import com.cesi.cops.dto.CheckResultDto;
 import com.cesi.cops.entities.Check;
 import com.cesi.cops.entities.Cop;
+import com.cesi.cops.entities.Lesson;
 import com.cesi.cops.entities.Offender;
 import com.cesi.cops.repositories.CheckRepository;
 import com.cesi.cops.repositories.CopRepository;
+import com.cesi.cops.repositories.LessonRepository;
 import com.cesi.cops.repositories.OffenderRepository;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -28,32 +33,75 @@ public class CheckController {
     private CopRepository copRepository;
 
     @Autowired
+    private LessonRepository lessonRepository;
+
+    @Autowired
     private CheckRepository checkRepository;
 
     @RequestMapping(value = "/check", method = RequestMethod.POST)
-    public ResponseEntity<Void> addCheck(
+    public ResponseEntity<List<CheckResultDto>> addCheck(
         @Valid @RequestBody ArrayList<CheckDto> checks
     ) {
+        List<CheckResultDto> result = new ArrayList<>();
         for (CheckDto checkDto : checks) {
+            CheckResultDto checkResultDto = new CheckResultDto(checkDto);
+
             Offender offender = offenderRepository.findOne(checkDto.getStudentId());
             Cop cop = copRepository.findOneByMacAddress(checkDto.getCopMacAddress());
 
             if (null == cop) {
-                return ResponseEntity.badRequest().header("Failure", "Cop not found").build();
+                checkResultDto.setSuccess(false);
+                checkResultDto.setError("Cop not found");
+                result.add(checkResultDto);
+                continue;
             }
 
             if (null == offender) {
-                return ResponseEntity.badRequest().header("Failure", "Offender not found").build();
+                checkResultDto.setSuccess(false);
+                checkResultDto.setError("Student not found");
+                result.add(checkResultDto);
+                continue;
+            }
+
+            DateTime dateCheck = new DateTime(checkDto.getDate());
+            dateCheck = dateCheck.withHourOfDay(0);
+            dateCheck = dateCheck.withMinuteOfHour(0);
+            dateCheck = dateCheck.withSecondOfMinute(0);
+
+            Lesson lesson = lessonRepository.findOneByGradesAndDateLesson(offender.getGrade(), dateCheck);
+
+            if (null == lesson) {
+                checkResultDto.setSuccess(false);
+                checkResultDto.setError("No lesson found for this student");
+                result.add(checkResultDto);
+                continue;
+            }
+
+            if (!lesson.getClassroom().equals(cop.getClassroom())) {
+                checkResultDto.setSuccess(false);
+                checkResultDto.setError("This student does not belong to this lesson");
+                result.add(checkResultDto);
+                continue;
             }
 
             Check check = new Check();
             check.setDate(checkDto.getDate());
             check.setOffender(offender);
             check.setCop(cop);
+            check.setLesson(lesson);
 
-            checkRepository.save(check);
+            try {
+                checkRepository.save(check);
+                checkResultDto.setSuccess(true);
+            } catch (Exception e) {
+                checkResultDto.setSuccess(false);
+                checkResultDto.setError(e.getMessage());
+            } finally {
+                result.add(checkResultDto);
+            }
+
         }
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(result);
     }
 }

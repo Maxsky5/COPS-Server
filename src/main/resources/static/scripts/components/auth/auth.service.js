@@ -3,55 +3,59 @@
 angular.module('copsApp')
     .factory('AuthService', function ($http, $rootScope, $location) {
         return {
-            authenticate: function (callback) {
-                var headers = $rootScope.credentials ? {
-                    authorization: "Basic " + btoa($rootScope.credentials.email + ":" + $rootScope.credentials.password)
+            getUser: function (callback) {
+                $http.get('user')
+                    .success(function (data) {
+                        if (data && data.authenticated) {
+                            $rootScope.authenticated = true;
+                            $rootScope.user = data;
+                        } else {
+                            $rootScope.authenticated = false;
+                        }
+
+                        callback && callback();
+                    })
+                    .error(function () {
+                        $rootScope.authenticated = false;
+                        callback && callback();
+                    });
+            },
+            authenticate: function (credentials) {
+                var headers = credentials ? {
+                    authorization: "Basic " + btoa(credentials.email + ":" + credentials.password)
                 } : {};
 
-                $http.get('api/user', {
-                    headers: headers
-                }).success(function (data) {
-                    if (data.authenticated) {
-                        $rootScope.authenticated = true;
-                        $rootScope.user = data;
-                    } else {
-                        $rootScope.authenticated = false;
-                    }
-                    callback && callback();
-                }).error(function () {
-                    $rootScope.authenticated = false;
-                    callback && callback();
-                });
-            },
-            login: function (_credentials) {
-                var as = this;
-                $http.post('login', $.param(_credentials), {
-                    headers: {
-                        "content-type": "applicat/x-www-form-urlencoded"
-                    }
-                }).success(function () {
-                    $rootScope.credentials = _credentials;
-                    as.authenticate(function () {
-                        if ($rootScope.authenticated) {
-                            $location.path("/dashboard");
-                            $rootScope.error = false;
+                $http.get('user', {headers: headers})
+                    .success(function (data) {
+                        if (data.authenticated) {
+                            $rootScope.authenticated = true;
+                            $rootScope.user = data;
+
+                            if ($rootScope.requestedPath) {
+                                $location.path($rootScope.requestedPath);
+                                $rootScope.requestedPath = null;
+                            } else {
+                                $location.path("/dashboard");
+                            }
                         } else {
-                            $location.path("/login");
+                            $rootScope.authenticated = false;
                             $rootScope.error = true;
+                            $location.path("/login");
                         }
+                    })
+                    .error(function () {
+                        $rootScope.authenticated = false;
+                        $rootScope.error = true;
+                        $location.path("/login");
                     });
-                })
             },
             logout: function () {
-                $rootScope.credentials = {};
-                $http.post('logout', {}).success(function () {
+                $http.post('logout').success(function () {
                     $rootScope.user = {};
-                    $rootScope.credentials = {};
                     $rootScope.authenticated = false;
                     $location.path("/login");
                 }).error(function () {
                     $rootScope.user = {};
-                    $rootScope.credentials = {};
                     $rootScope.authenticated = false;
                     $location.path("/login");
                 });

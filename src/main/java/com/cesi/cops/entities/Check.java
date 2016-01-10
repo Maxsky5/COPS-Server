@@ -32,8 +32,13 @@ public class Check implements Serializable {
     @JsonView(View.PrincipalWithManyToOne.class)
     private Cop cop;
 
+    @ManyToOne
+    @JoinColumn(name = "lesson_id", nullable = false)
+    @JsonView(View.PrincipalWithManyToOne.class)
+    private Lesson lesson;
+
     @Column(name = "date")
-    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonSerialize(using = CustomDateTimeSerializer.class)
     @JsonDeserialize(using = CustomDateTimeDeserializer.class)
     @JsonView(View.Principal.class)
@@ -61,6 +66,14 @@ public class Check implements Serializable {
 
     public void setCop(Cop cop) {
         this.cop = cop;
+    }
+
+    public Lesson getLesson() {
+        return lesson;
+    }
+
+    public void setLesson(Lesson lesson) {
+        this.lesson = lesson;
     }
 
     public DateTime getDate() {
