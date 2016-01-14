@@ -1,22 +1,33 @@
 package com.cesi.cops.dto;
 
-import com.cesi.cops.entities.CopEntity;
+import com.cesi.cops.entities.Lesson;
+import com.cesi.cops.jsonViews.View;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import java.util.List;
 
 public class DashboardDto {
 
+    @JsonView(View.Principal.class)
     private Integer nbStudents;
 
+    @JsonView(View.Principal.class)
     private Integer nbTeachers;
 
+    @JsonView(View.Principal.class)
     private Integer nbGrades;
 
-    private Integer nbCops;
+    @JsonView(View.Principal.class)
+    private Integer nbLessons;
 
+    @JsonView(View.Principal.class)
     private List<DashboardEntityDto> lastUpdates;
 
+    @JsonView(View.Principal.class)
     private List<DashboardCheckDto> lastChecks;
+
+    @JsonView(View.Principal.class)
+    private List<Lesson> lessonsToday;
 
     public DashboardDto() {
     }
@@ -45,12 +56,12 @@ public class DashboardDto {
         this.nbGrades = nbGrades;
     }
 
-    public Integer getNbCops() {
-        return nbCops;
+    public Integer getNbLessons() {
+        return nbLessons;
     }
 
-    public void setNbCops(Integer nbCops) {
-        this.nbCops = nbCops;
+    public void setNbLessons(Integer nbLessons) {
+        this.nbLessons = nbLessons;
     }
 
     public List<DashboardEntityDto> getLastUpdates() {
@@ -67,5 +78,13 @@ public class DashboardDto {
 
     public void setLastChecks(List<DashboardCheckDto> lastChecks) {
         this.lastChecks = lastChecks;
+    }
+
+    public List<Lesson> getLessonsToday() {
+        return lessonsToday;
+    }
+
+    public void setLessonsToday(List<Lesson> lessonsToday) {
+        this.lessonsToday = lessonsToday;
     }
 }

@@ -1,0 +1,128 @@
+<section class="content-header">
+    <h1>Tableau de board</h1>
+    <ol class="breadcrumb">
+        <li class="active"><a href=""><i class="fa fa-dashboard"></i> Tableau de bord</a></li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-aqua"><i class="fa fa-graduation-cap"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Etudiants</span>
+                    <span class="info-box-number">{{dashboard.nbStudents}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-red"><i class="fa fa-suitcase"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Intervenants</span>
+                    <span class="info-box-number">{{dashboard.nbTeachers}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-green"><i class="fa fa-users"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Promotions</span>
+                    <span class="info-box-number">{{dashboard.nbGrades}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-yellow"><i class="fa fa-laptop"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Cours</span>
+                    <span class="info-box-number">{{dashboard.nbLessons}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="box box-info">
+                <div class="box-header">
+                    <h3 class="box-title">Dernieres modifications</h3>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    </div>
+                </div>
+                <div class="box-body no-padding-x no-padding-y">
+                    <table class="table">
+                        <tr ng-repeat="lastUpdate in dashboard.lastUpdates">
+                            <td><i class="dashboard-update-icon {{lastUpdate.iconClass}}"></i> {{lastUpdate.name}}</td>
+                            <td class="text-right">{{lastUpdate.date}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="box box-info">
+                <div class="box-header">
+                    <h3 class="box-title">Derniers checks</h3>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    </div>
+                </div>
+                <div class="box-body no-padding-x no-padding-y">
+                    <table class="table">
+                        <tr ng-repeat="lastCheck in dashboard.lastChecks">
+                            <td>{{lastCheck.student}}</td>
+                            <td class="text-right">{{lastCheck.date}}</td>
+                        </tr>
+                        <tr ng-show="!dashboard.lastChecks || dashboard.lastChecks.length == 0">
+                            <td>Aucun résultat</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="box box-info">
+                <div class="box-header">
+                    <h3 class="box-title">Cours aujourd'hui</h3>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    </div>
+                </div>
+                <div class="box-body no-padding-x no-padding-y">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Cours</th>
+                                <th>Promotions</th>
+                                <th>Intervenant</th>
+                                <th>Salle</th>
+                            </tr>
+                        </thead>
+                        <tr ng-repeat="lesson in dashboard.lessonsToday">
+                            <td><a ui-sref="lesson.detail({id: lesson.id})">{{lesson.name}}</a></td>
+                            <td>
+                                <span class="label label-default" ng-repeat="grade in lesson.grades">{{grade.name}}</span>
+                            </td>
+                            <td>{{lesson.teacher.firstname + ' ' + lesson.teacher.lastname}}</td>
+                            <td><span class="label label-default">{{lesson.classroom.name}}</span></td>
+                        </tr>
+                        <tr ng-show="!dashboard.lessonsToday || dashboard.lessonsToday.length == 0">
+                            <td>Aucun cours</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

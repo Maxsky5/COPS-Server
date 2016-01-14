@@ -1,0 +1,30 @@
+.no-padding-x {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.no-padding-y {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.fa-cop {
+    display: inline-block;
+    height: 14px;
+    width: 14px;
+    margin-right: 6px;
+    background: url("../img/favicon.png") center center no-repeat;
+    background-size: contain;
+    position: relative;
+    top: 2px;
+}
+
+.dashboard-update-icon {
+    width: 24px;
+    text-align: center;
+    margin-right: 0;
+}
+
+.table > tbody > tr > td {
+    vertical-align: middle;
+}

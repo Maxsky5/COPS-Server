@@ -3,17 +3,17 @@ package com.cesi.cops.controllers;
 import com.cesi.cops.dto.DashboardCheckDto;
 import com.cesi.cops.dto.DashboardDto;
 import com.cesi.cops.dto.DashboardEntityDto;
-import com.cesi.cops.entities.User;
+import com.cesi.cops.jsonViews.View;
 import com.cesi.cops.repositories.*;
 import com.cesi.cops.utils.OffenderTypeEnum;
+import com.fasterxml.jackson.annotation.JsonView;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,6 +41,7 @@ public class DashboardController {
     private LessonRepository lessonRepository;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
+    @JsonView(View.PrincipalWithManyToOne.class)
     public ResponseEntity<DashboardDto> get() {
         DashboardDto dashboard = new DashboardDto();
 
@@ -70,10 +71,16 @@ public class DashboardController {
         dashboard.setNbGrades(gradeRepository.findAll().size());
         dashboard.setNbStudents(offenderRepository.findByType(OffenderTypeEnum.STUDENT).size());
         dashboard.setNbTeachers(offenderRepository.findByType(OffenderTypeEnum.TEACHER).size());
-        dashboard.setNbCops(copRepository.findAll().size());
+        dashboard.setNbLessons(lessonRepository.findAll().size());
         dashboard.setLastChecks(checkRepository.findTop10ByOrderByDateDesc().stream()
             .map(c -> new DashboardCheckDto(c))
             .collect(Collectors.toList()));
+
+        DateTime today = new DateTime();
+        today = today.withHourOfDay(0);
+        today = today.withMinuteOfHour(0);
+        today = today.withSecondOfMinute(0);
+        dashboard.setLessonsToday(lessonRepository.findByDateLesson(today));
 
         return ResponseEntity.ok().body(dashboard);
     }

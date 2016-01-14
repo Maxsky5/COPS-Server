@@ -1,18 +1,23 @@
 package com.cesi.cops.dto;
 
 import com.cesi.cops.entities.*;
+import com.cesi.cops.jsonViews.View;
 import com.cesi.cops.utils.CustomDateTimeSerializer;
 import com.cesi.cops.utils.OffenderTypeEnum;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.joda.time.DateTime;
 
 public class DashboardEntityDto {
 
+    @JsonView(View.Principal.class)
     String name;
 
+    @JsonView(View.Principal.class)
     @JsonSerialize(using = CustomDateTimeSerializer.class)
     DateTime date;
 
+    @JsonView(View.Principal.class)
     String iconClass;
 
     public DashboardEntityDto() {
@@ -27,7 +32,7 @@ public class DashboardEntityDto {
     public DashboardEntityDto(Cop cop) {
         this.name = cop.getName();
         this.date = cop.getDateUpdate();
-        this.iconClass = "fa fa-eye";
+        this.iconClass = "fa-cop";
     }
 
     public DashboardEntityDto(Grade grade) {

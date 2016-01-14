@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -40,31 +41,44 @@ public class SynchronizationController {
     @Inject
     private ClassroomRepository classroomRepository;
 
-    @RequestMapping(value = "/init", method = RequestMethod.GET)
-    @JsonView(View.PrincipalWithManyToOne.class)
-    public ResponseEntity<SynchronizationDto> init() {
-        List<Offender> offenders = offenderRepository.findAll();
-        List<Grade> grades = gradeRepository.findAll();
-        List<Cop> cops = copRepository.findAll();
-        List<Lesson> lessons = lessonRepository.findAll();
-        List<Classroom> classrooms = classroomRepository.findAll();
-
-        SynchronizationDto result = new SynchronizationDto(offenders, grades, cops, lessons, classrooms);
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
     @RequestMapping(value = "/synchronize", method = RequestMethod.GET)
     @JsonView(View.PrincipalWithManyToOne.class)
     public ResponseEntity<SynchronizationDto> synchronize(
-            @RequestParam(value = "date", required = true) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") DateTime date
+        @RequestParam(value = "copMacAddress", required = true) String copMacAddress
     ) {
-        List<Offender> offenders = offenderRepository.findByDateUpdateAfter(date);
-        List<Grade> grades = gradeRepository.findByDateUpdateAfter(date);
-        List<Cop> cops = copRepository.findByDateUpdateAfter(date);
-        List<Lesson> lessons = lessonRepository.findByDateUpdateAfter(date);
-        List<Classroom> classrooms = classroomRepository.findByDateUpdateAfter(date);
+        Cop cop = copRepository.findOneByMacAddress(copMacAddress);
+
+        if (null == cop) {
+            return ResponseEntity.badRequest().header("Failure", "Cop not found").body(null);
+        }
+
+        DateTime date = cop.getDateLastSync();
+
+        List<Offender> offenders;
+        List<Grade> grades;
+        List<Cop> cops;
+        List<Lesson> lessons;
+        List<Classroom> classrooms;
+
+        if (null == date) {
+            offenders = offenderRepository.findAll();
+            grades = gradeRepository.findAll();
+            cops = copRepository.findAll();
+            lessons = lessonRepository.findAll();
+            classrooms = classroomRepository.findAll();
+        } else {
+            offenders = offenderRepository.findByDateUpdateAfter(date);
+            grades = gradeRepository.findByDateUpdateAfter(date);
+            cops = copRepository.findByDateUpdateAfter(date);
+            lessons = lessonRepository.findByDateUpdateAfter(date);
+            classrooms = classroomRepository.findByDateUpdateAfter(date);
+        }
 
         SynchronizationDto result = new SynchronizationDto(offenders, grades, cops, lessons, classrooms);
+
+        cop.setDateLastSync(new DateTime());
+        copRepository.save(cop);
+
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

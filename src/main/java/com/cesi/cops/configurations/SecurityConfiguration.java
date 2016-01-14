@@ -44,7 +44,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .httpBasic()
             .and()
             .authorizeRequests()
-            .antMatchers("/assets/**", "/bower_components/**/*.{js,html,css}", "/scripts/**/*.{js,html}", "/index.html", "/", "/user").permitAll()
+            .antMatchers("/assets/**", "/bower_components/**/*.{js,html,css}", "/scripts/**/*.{js,html}", "/index.html", "/", "/user", "/api/check**", "/api/synchronize*").permitAll()
             .anyRequest().authenticated()
             .and()
             .csrf().csrfTokenRepository(csrfTokenRepository())

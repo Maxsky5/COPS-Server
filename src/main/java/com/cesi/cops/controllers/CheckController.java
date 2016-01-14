@@ -10,6 +10,7 @@ import com.cesi.cops.repositories.CheckRepository;
 import com.cesi.cops.repositories.CopRepository;
 import com.cesi.cops.repositories.LessonRepository;
 import com.cesi.cops.repositories.OffenderRepository;
+import com.cesi.cops.utils.OffenderTypeEnum;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -58,7 +59,7 @@ public class CheckController {
 
             if (null == offender) {
                 checkResultDto.setSuccess(false);
-                checkResultDto.setError("Student not found");
+                checkResultDto.setError("Offender not found");
                 result.add(checkResultDto);
                 continue;
             }
@@ -68,18 +69,24 @@ public class CheckController {
             dateCheck = dateCheck.withMinuteOfHour(0);
             dateCheck = dateCheck.withSecondOfMinute(0);
 
-            Lesson lesson = lessonRepository.findOneByGradesAndDateLesson(offender.getGrade(), dateCheck);
+            Lesson lesson;
+
+            if (offender.getType().equals(OffenderTypeEnum.TEACHER)) {
+                lesson = lessonRepository.findOneByTeacherAndDateLesson(offender, dateCheck);
+            } else {
+                lesson = lessonRepository.findOneByGradesAndDateLesson(offender.getGrade(), dateCheck);
+            }
 
             if (null == lesson) {
                 checkResultDto.setSuccess(false);
-                checkResultDto.setError("No lesson found for this student");
+                checkResultDto.setError("No lesson found for this offender");
                 result.add(checkResultDto);
                 continue;
             }
 
             if (!lesson.getClassroom().equals(cop.getClassroom())) {
                 checkResultDto.setSuccess(false);
-                checkResultDto.setError("This student does not belong to this lesson");
+                checkResultDto.setError("This offender does not belong to this lesson");
                 result.add(checkResultDto);
                 continue;
             }
